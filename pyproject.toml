@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mcp_weather_server"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
   { name = "danielshih", email = "dog830228@gmail.com" },
 ]
@@ -20,7 +20,3 @@ mcp_weather_server = "mcp_weather_server.mcp_weather_server:main"
 
 [project.urls]
 Source = "https://github.com/isdaniel/mcp_weather_server"
-
-[tool.poetry]
-name = "mcp_weather_server"
-version = "0.1.1"

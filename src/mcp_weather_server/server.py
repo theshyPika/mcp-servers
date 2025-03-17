@@ -71,5 +71,8 @@ async def get_weather(city: str) -> str:
 
         return f"The weather in {city} is {description} with a temperature of {temperature}°C."
 
-if __name__ == "__main__":
+def main():
     mcp.run()
+
+if __name__ == "__main__":
+    main()
