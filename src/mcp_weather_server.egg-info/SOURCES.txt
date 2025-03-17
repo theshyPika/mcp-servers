@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+src/mcp_weather_server/mcp_weather_server.py
+src/mcp_weather_server.egg-info/PKG-INFO
+src/mcp_weather_server.egg-info/SOURCES.txt
+src/mcp_weather_server.egg-info/dependency_links.txt
+src/mcp_weather_server.egg-info/entry_points.txt
+src/mcp_weather_server.egg-info/requires.txt
+src/mcp_weather_server.egg-info/top_level.txt
+tests/test_mcp_weather_server.py

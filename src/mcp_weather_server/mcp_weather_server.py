@@ -8,7 +8,7 @@ mcp = FastMCP("Weather")
 @mcp.tool()
 async def get_weather(city: str) -> str:
     """Get weather information for a city
-    
+
     Dependencies:
         httpx
     """
@@ -19,7 +19,7 @@ async def get_weather(city: str) -> str:
         )
         if geo_response.status_code != 200 or "results" not in geo_response.json():
             return f"Error: Could not retrieve coordinates for {city}."
-        
+
         geo_data = geo_response.json()["results"][0]
         latitude = geo_data["latitude"]
         longitude = geo_data["longitude"]

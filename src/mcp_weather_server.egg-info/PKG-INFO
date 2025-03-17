@@ -1,3 +1,15 @@
+Metadata-Version: 2.2
+Name: mcp_weather_server
+Version: 0.1.0
+Summary: An MCP server for weather information
+Author-email: danielshihi <dog830228@gmail.com>
+Project-URL: Source, https://github.com/isdaniel/mcp_weather_server
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: httpx
+Requires-Dist: fastmcp@ git+https://github.com/nat/fastmcp.git
+
 # Weather MCP Server
 
 A Model Context Protocol (MCP) server that provides weather information using the Open-Meteo API.

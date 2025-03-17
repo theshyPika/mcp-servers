@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp_weather_server"
+version = "0.1.0"
+authors = [
+  { name = "danielshihi", email = "dog830228@gmail.com" },
+]
+description = "An MCP server for weather information"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+  'httpx',
+  'fastmcp @ git+https://github.com/nat/fastmcp.git',
+]
+
+[project.scripts]
+mcp_weather_server = "mcp_weather_server.mcp_weather_server:main"
+
+[project.urls]
+Source = "https://github.com/isdaniel/mcp_weather_server"

@@ -1,6 +1,6 @@
 import pytest
 import httpx
-from src.mcp_weather_server import get_weather
+from src.mcp_weather_server.mcp_weather_server import get_weather
 
 @pytest.mark.asyncio
 async def test_get_weather_geocoding_error():
