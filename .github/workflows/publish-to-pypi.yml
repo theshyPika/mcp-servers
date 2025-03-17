@@ -28,10 +28,20 @@ jobs:
     - name: Build package
       run: python -m build
 
+    - name: Check if version exists on PyPI
+      id: check_version
+      run: |
+        PACKAGE_NAME="mcp_weather_server"
+        VERSION=$(python -c "import setuptools; print(setuptools.config.read_configuration('setup.cfg')['metadata']['version'])")
+        if curl -sSf "https://pypi.org/pypi/${PACKAGE_NAME}/${VERSION}/json" > /dev/null; then
+          echo "Version ${VERSION} already exists on PyPI. Skipping publish."
+          echo "skip_publish=true" >> $GITHUB_ENV
+        else
+          echo "skip_publish=false" >> $GITHUB_ENV
+        fi
+
     - name: Publish to PyPI
+      if: env.skip_publish != 'true'
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.PYPI_API_TOKEN }}
-        # If your package is not located in the root of your repository, you need to specify the path here.
-        # For example, if your package is in a subdirectory called "my_package":
-        # package_dir: my_package/
