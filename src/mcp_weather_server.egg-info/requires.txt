@@ -1,2 +1,0 @@
-httpx
-fastmcp@ git+https://github.com/nat/fastmcp.git
