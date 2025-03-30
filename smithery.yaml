@@ -1,0 +1,70 @@
+# Smithery configuration for MCP Weather Server
+name: mcp_weather_server
+version: 0.1.3
+description: An MCP server for weather information using the Open-Meteo API
+
+# Server configuration
+server:
+  type: mcp
+  name: Weather
+  protocol: fastmcp
+
+# API endpoints
+endpoints:
+  - name: get_weather
+    description: Get weather information for a city
+    method: GET
+    path: /weather
+    parameters:
+      - name: city
+        type: string
+        required: true
+        description: The name of the city to get weather information for
+
+# Dependencies
+dependencies:
+  - httpx>=0.28.1
+  - mcp>=1.0.0
+  - mcp[cli]>=1.2.1
+  - python-dotenv>=1.0.1
+  - argparse>=1.4.0
+
+# Build configuration
+build:
+  requires:
+    - setuptools>=61.0
+    - wheel
+  backend: setuptools.build_meta
+
+# Deployment configuration
+deployment:
+  command: python
+  args:
+    - src/mcp_weather_server/server-see.py
+  requires_python: ">=3.13"
+
+# Documentation
+documentation:
+  features:
+    - Get current weather information for a specified city
+  usage:
+    - tool: get_weather
+      description: Retrieves the current weather information for a given city
+      parameters:
+        - name: city
+          type: string
+          required: true
+          description: The name of the city
+      example: |
+        <use_mcp_tool>
+        <server_name>weather</server_name>
+        <tool_name>get_weather</tool_name>
+        <arguments>
+        {
+          "city": "Taipei"
+        }
+        </arguments>
+        </use_mcp_tool>
+
+# Source code repository
+repository: https://github.com/isdaniel/mcp_weather_server
