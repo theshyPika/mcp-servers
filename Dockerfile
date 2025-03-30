@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
 
 # Set the working directory
 WORKDIR /app
@@ -6,9 +6,15 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Create and use a virtual environment inside the container
+RUN uv venv /app/.venv
+
+# Set environment variables to use the virtual environment
+ENV VIRTUAL_ENV=/app/.venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Install dependencies (if applicable)
+RUN uv pip install -r requirements.txt
 
 # Entrypoint to start the server
-CMD ["python", "src/mcp_weather_server/server.py"]
+CMD ["uv", "run", "src/mcp_weather_server/server-see.py"]
