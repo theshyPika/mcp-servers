@@ -10,10 +10,14 @@ authors = [
 ]
 description = "An MCP server for weather information"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.13"
 dependencies = [
   'httpx',
-  "mcp>=1.0.0"
+  "mcp>=1.0.0",
+  "argparse>=1.4.0",
+  "httpx>=0.28.1",
+  "mcp[cli]>=1.2.1",
+  "python-dotenv>=1.0.1",
 ]
 
 [project.scripts]
@@ -21,3 +25,5 @@ mcp_weather_server = "mcp_weather_server.mcp_weather_server:main"
 
 [project.urls]
 Source = "https://github.com/isdaniel/mcp_weather_server"
+
+
