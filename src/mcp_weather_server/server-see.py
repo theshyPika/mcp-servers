@@ -5,6 +5,8 @@ from starlette.routing import Mount, Route
 from starlette.applications import Starlette
 from mcp.server.sse import SseServerTransport
 from mcp.server import Server
+from collections import defaultdict, Counter
+from datetime import datetime
 import uvicorn
 
 # Create an MCP server
@@ -32,50 +34,49 @@ async def get_weather(city: str) -> str:
 
         # Get weather data using the Forecast API
         weather_response = await client.get(
-            f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&hourly=temperature_2m,weather_code&timezone=auto"
+            f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&hourly=temperature_2m,weather_code&timezone=auto&past_days=7"
         )
+
         if weather_response.status_code != 200:
             return f"Error: Could not retrieve weather information for {city}."
 
         weather_data = weather_response.json()
-        current_hour = weather_data["hourly"]["time"].index(max(weather_data["hourly"]["time"]))
-        temperature = weather_data["hourly"]["temperature_2m"][current_hour]
-        weather_code = weather_data["hourly"]["weather_code"][current_hour]
 
-        # Weather code descriptions (from Open-Meteo documentation)
         weather_descriptions = {
-            0: "Clear sky",
-            1: "Mainly clear",
-            2: "Partly cloudy",
-            3: "Overcast",
-            45: "Fog",
-            48: "Depositing rime fog",
-            51: "Light drizzle",
-            53: "Moderate drizzle",
-            55: "Dense drizzle",
-            56: "Light freezing drizzle",
-            57: "Dense freezing drizzle",
-            61: "Slight rain",
-            63: "Moderate rain",
-            65: "Heavy rain",
-            66: "Light freezing rain",
-            67: "Heavy freezing rain",
-            71: "Slight snow fall",
-            73: "Moderate snow fall",
-            75: "Heavy snow fall",
-            77: "Snow grains",
-            80: "Slight rain showers",
-            81: "Moderate rain showers",
-            82: "Violent rain showers",
-            85: "Slight snow showers",
-            86: "Heavy snow showers",
-            95: "Thunderstorm",
-            96: "Thunderstorm with slight hail",
-            99: "Thunderstorm with heavy hail",
+            0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
+            45: "Fog", 48: "Depositing rime fog", 51: "Light drizzle",
+            53: "Moderate drizzle", 55: "Dense drizzle", 56: "Light freezing drizzle",
+            57: "Dense freezing drizzle", 61: "Slight rain", 63: "Moderate rain",
+            65: "Heavy rain", 66: "Light freezing rain", 67: "Heavy freezing rain",
+            71: "Slight snow fall", 73: "Moderate snow fall", 75: "Heavy snow fall",
+            77: "Snow grains", 80: "Slight rain showers", 81: "Moderate rain showers",
+            82: "Violent rain showers", 85: "Slight snow showers", 86: "Heavy snow showers",
+            95: "Thunderstorm", 96: "Thunderstorm with slight hail", 99: "Thunderstorm with heavy hail"
         }
-        description = weather_descriptions.get(weather_code, "Unknown weather code")
 
-        return f"The weather in {city} is {description} with a temperature of {temperature}°C."
+        # Group data by date
+        daily_temps = defaultdict(list)
+        daily_weather_codes = defaultdict(list)
+
+        for time_str, temp, code in zip(
+            weather_data["hourly"]["time"],
+            weather_data["hourly"]["temperature_2m"],
+            weather_data["hourly"]["weather_code"]
+        ):
+            dt = datetime.fromisoformat(time_str)
+            date_str = dt.date().isoformat()
+            daily_temps[date_str].append(temp)
+            daily_weather_codes[date_str].append(code)
+
+        # Create summaries
+        summaries = []
+        for date in sorted(daily_temps.keys()):
+            avg_temp = round(sum(daily_temps[date]) / len(daily_temps[date]))
+            most_common_code = Counter(daily_weather_codes[date]).most_common(1)[0][0]
+            description = weather_descriptions.get(most_common_code, "Unknown")
+            summaries.append(f'on {date} the weather in {city} is "{description}" with a temperature of {avg_temp}°C')
+
+        return "\r\n".join(summaries)
 
 def create_starlette_app(mcp_server: Server, *, debug: bool = False) -> Starlette:
     """Create a Starlette application that can server the provied mcp server with SSE."""
