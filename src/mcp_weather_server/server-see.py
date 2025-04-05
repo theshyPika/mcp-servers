@@ -11,11 +11,11 @@ import uvicorn
 
 # Create an MCP server
 mcp = FastMCP("Weather")
+import json
 
-# Add a weather tool
 @mcp.tool()
 async def get_weather(city: str) -> str:
-    """Get weather information for a city
+    """Get weather information for a city, return json format for AI
 
     Dependencies:
         httpx
@@ -26,7 +26,7 @@ async def get_weather(city: str) -> str:
             f"https://geocoding-api.open-meteo.com/v1/search?name={city}"
         )
         if geo_response.status_code != 200 or "results" not in geo_response.json():
-            return f"Error: Could not retrieve coordinates for {city}."
+            return {"error": f"Could not retrieve coordinates for {city}."}
 
         geo_data = geo_response.json()["results"][0]
         latitude = geo_data["latitude"]
@@ -38,7 +38,7 @@ async def get_weather(city: str) -> str:
         )
 
         if weather_response.status_code != 200:
-            return f"Error: Could not retrieve weather information for {city}."
+            return {"error": f"Could not retrieve weather information for {city}."}
 
         weather_data = weather_response.json()
 
@@ -74,9 +74,17 @@ async def get_weather(city: str) -> str:
             avg_temp = round(sum(daily_temps[date]) / len(daily_temps[date]))
             most_common_code = Counter(daily_weather_codes[date]).most_common(1)[0][0]
             description = weather_descriptions.get(most_common_code, "Unknown")
-            summaries.append(f'on {date} the weather in {city} is "{description}" with a temperature of {avg_temp}°C')
+            dt = datetime.fromisoformat(date)
+            day_of_week = dt.strftime("%A")
+            summaries.append({
+                "date": date,
+                "day_of_week": day_of_week,
+                "city": city,
+                "weather": description,
+                "temperature_celsius": avg_temp
+            })
 
-        return "\r\n".join(summaries)
+        return json.dumps(summaries, indent=2)
 
 def create_starlette_app(mcp_server: Server, *, debug: bool = False) -> Starlette:
     """Create a Starlette application that can server the provied mcp server with SSE."""
