@@ -6,15 +6,9 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Create and use a virtual environment inside the container
-RUN uv venv /app/.venv
-
-# Set environment variables to use the virtual environment
-ENV VIRTUAL_ENV=/app/.venv
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-# Install dependencies (if applicable)
-RUN uv pip install -r requirements.txt
+# Upgrade pip and install dependencies, ignoring the Python version check
+RUN pip install --upgrade pip \
+    && pip install --ignore-requires-python --no-cache-dir .
 
 # Entrypoint to start the server
-CMD ["uv", "run", "src/mcp_weather_server/server-see.py"]
+CMD ["python", "src/mcp_weather_server/server.py"]
