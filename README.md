@@ -1,3 +1,5 @@
+[![smithery badge](https://smithery.ai/badge/@isdaniel/mcp_weather_server)](https://smithery.ai/server/@isdaniel/mcp_weather_server)
+
 # Weather MCP Server
 
 A Model Context Protocol (MCP) server that provides weather information using the Open-Meteo API.
