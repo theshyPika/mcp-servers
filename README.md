@@ -22,7 +22,7 @@ This server is designed to be installed manually by adding its configuration to 
     "weather": {
       "command": "python",
       "args": [
-        "mcp_weather_server.py"
+        "mcp_weather_server/server.py"
       ],
       "disabled": false,
       "autoApprove": []
