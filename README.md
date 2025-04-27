@@ -46,7 +46,7 @@ This server does not require an API key. It uses the Open-Meteo API, which is fr
 
 ## Usage
 
-This server provides a single tool: `get_weather`.
+This server provides several tools: `get_weather`, `get_weather_by_datetime_range`, and `get_current_datetime`.
 
 ### `get_weather`
 
@@ -67,6 +67,58 @@ To get the weather in Taipei, you would use the tool like this:
 <arguments>
 {
   "city": "Taipei"
+}
+</arguments>
+</use_mcp_tool>
+```
+
+### `get_weather_by_datetime_range`
+
+Retrieves weather information for a specified city between start and end dates.
+
+**Parameters:**
+
+*   `city` (string, required): The name of the city.
+*   `start_date` (string, required): Start date in format YYYY-MM-DD (ISO 8601).
+*   `end_date` (string, required): End date in format YYYY-MM-DD (ISO 8601).
+
+**Example:**
+
+To get the weather in London between 2024-01-01 and 2024-01-07, you would use the tool like this:
+
+```
+<use_mcp_tool>
+<server_name>weather</server_name>
+<tool_name>get_weather_by_datetime_range</tool_name>
+<arguments>
+{
+  "city": "London",
+  "start_date": "2024-01-01",
+  "end_date": "2024-01-07"
+}
+</arguments>
+</use_mcp_tool>
+```
+
+### `get_current_datetime`
+
+Retrieves the current time in a specified timezone.
+
+**Parameters:**
+
+*   `timezone_name` (string, required): IANA timezone name (e.g., 'America/New_York', 'Europe/London'). Use UTC timezone if no timezone provided by the user.
+
+**Example:**
+
+To get the current time in New York, you would use the tool like this:
+
+```
+<use_mcp_tool>
+<server_name>weather</server_name>
+<tool_name>get_current_datetime</tool_name>
+<arguments>
+{
+  "timezone_name": "America/New_York"
 }
 </arguments>
 </use_mcp_tool>
