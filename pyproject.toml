@@ -20,8 +20,11 @@ dependencies = [
   "python-dotenv>=1.0.1",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_weather_server"]
+
 [project.scripts]
-mcp_weather_server = "mcp_weather_server.mcp_weather_server:main"
+mcp_weather_server = "mcp_weather_server:main"
 
 [project.urls]
 Source = "https://github.com/isdaniel/mcp_weather_server"

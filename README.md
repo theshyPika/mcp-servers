@@ -12,6 +12,12 @@ A Model Context Protocol (MCP) server that provides weather information using th
 
 ## Installation
 
+Pip Installation and Usage, This package can be installed using pip:
+
+```bash
+pip install mcp_weather_server
+```
+
 This server is designed to be installed manually by adding its configuration to the `cline_mcp_settings.json` file.
 
 1.  Add the following entry to the `mcpServers` object in your `cline_mcp_settings.json` file:
@@ -22,7 +28,8 @@ This server is designed to be installed manually by adding its configuration to 
     "weather": {
       "command": "python",
       "args": [
-        "mcp_weather_server/server.py"
+        "-m",
+        "mcp_weather_server"
       ],
       "disabled": false,
       "autoApprove": []
@@ -65,18 +72,17 @@ To get the weather in Taipei, you would use the tool like this:
 </use_mcp_tool>
 ```
 
-## Pip Installation and Usage
+## For developers
 
-This package can be installed using pip:
+Change Working Directory Before Running Python
 
-```bash
-pip install mcp_weather_server
+```
+python -m mcp_weather_server
 ```
 
-After installation, you can use the `mcp_weather_server` command-line tool:
+Or if you want Python to find your package no matter where you run from, you can set PYTHONPATH:
 
-```bash
-mcp_weather_server --city "Your City"
 ```
-
-Replace `"Your City"` with the city you want to get weather information for.
+set PYTHONPATH=C:\xxx\mcp_weather_server\src
+python -m mcp_weather_server
+```

@@ -10,5 +10,7 @@ COPY . /app
 RUN pip install --upgrade pip \
     && pip install --ignore-requires-python --no-cache-dir .
 
+ENV PYTHONPATH=/app/src
+
 # Entrypoint to start the server
-CMD ["python", "src/mcp_weather_server/server.py"]
+CMD ["python", "-m", "mcp_weather_server"]
