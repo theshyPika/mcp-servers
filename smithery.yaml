@@ -6,9 +6,4 @@ startCommand:
   commandFunction:
     # A function that produces the CLI command to start the MCP on stdio.
     |-
-    config => ({
-      command: 'sh',
-      args: ['-c', 
-        'uv venv .venv && . .venv/bin/activate && uv pip install python-dateutil mcp_weather_server && uv run mcp_weather_server'
-      ]
-    })
+    config => ({ command: 'uv', args: ['run', 'mcp_weather_server'] })
