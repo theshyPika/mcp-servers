@@ -6,11 +6,6 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Upgrade pip and install dependencies, ignoring the Python version check
-RUN pip install --upgrade pip \
-    && pip install --ignore-requires-python --no-cache-dir .
+RUN (uv venv .venv) && (. .venv/bin/activate) && (uv pip install python-dateutil mcp_weather_server)
 
-ENV PYTHONPATH=/app/src
-
-# Entrypoint to start the server
-CMD ["python", "-m", "mcp_weather_server"]
+CMD ["uv","run","mcp_weather_server"]
