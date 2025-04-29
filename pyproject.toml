@@ -12,7 +12,6 @@ description = "An MCP server for weather information"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-  'httpx',
   "mcp>=1.0.0",
   "argparse>=1.4.0",
   "httpx>=0.28.1",
