@@ -2,6 +2,10 @@
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/mcp-weather-server)](https://pypi.org/project/mcp-weather-server/)
 [![PyPI - Version](https://img.shields.io/pypi/v/mcp-weather-server)](https://pypi.org/project/mcp-weather-server/)
 
+<a href="https://glama.ai/mcp/servers/@isdaniel/mcp_weather_server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@isdaniel/mcp_weather_server/badge" />
+</a>
+
 # Weather MCP Server
 
 A Model Context Protocol (MCP) server that provides weather information using the Open-Meteo API.
