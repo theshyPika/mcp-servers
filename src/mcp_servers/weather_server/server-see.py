@@ -4,7 +4,7 @@ from starlette.requests import Request
 from starlette.routing import Mount, Route
 from starlette.applications import Starlette
 from mcp.server.sse import SseServerTransport
-from mcp.server import Server
+from mcp.pia.linegpt_server.server import Server
 from collections import defaultdict, Counter
 from datetime import datetime
 import uvicorn
