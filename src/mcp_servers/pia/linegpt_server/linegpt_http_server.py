@@ -411,12 +411,24 @@ def analyze_production_line_performance(
     data_summary - 组织好的产线性能数据
     """
 
-    # 生成时间范围（前一天凌晨到当天凌晨 UTC时间）
+    # 生成时间范围（周日/周一获取上周五数据，其他时间获取前一天数据）
     now = datetime.now(pytz.utc)
-    start_time = (now - timedelta(days=1)).replace(
-        hour=0, minute=0, second=0, microsecond=0
-    )
-    end_time = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    weekday = now.weekday()  # Monday=0, Sunday=6
+    
+    if weekday in [0, 6]:  # 周一或周日
+        days_to_subtract = 2 if weekday == 0 else 1  # 周一减2天到周五，周日减1天到周六
+        friday = (now - timedelta(days=days_to_subtract)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+        start_time = friday
+        end_time = (friday + timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+    else:
+        start_time = (now - timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+        end_time = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
     # 调用API获取数据（带重试机制）
     def call_api(url_suffix, max_retries=3):
